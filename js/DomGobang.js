@@ -98,13 +98,11 @@ function DomGobang() {
                 if (win(i, j ,chessBoard) === 1) {
                     EventUtil.removeListener(divctx, "click", setPiece);
                     EventUtil.removeListener(retract, "click", fnRetract);
-                    //alert("黑子胜！");
-                    layer.msg('黑棋胜!', {icon: 6,time:1000});
+                    alert("黑子胜！");
                 } else if (win(i, j ,chessBoard) == 2) {
                     EventUtil.removeListener(divctx, "click", setPiece);
                     EventUtil.removeListener(retract, "click", fnRetract);
-                    //alert("白子胜！")
-                    layer.msg('黑棋胜!', {icon: 6,time:1000});
+                    alert("白子胜！")
                 }
             }, 0);
 

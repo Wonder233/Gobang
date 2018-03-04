@@ -90,13 +90,11 @@ function H5Gobang() {
 
             setTimeout(function () {
                 if (win(i, j ,chessBoard) === 1) {
-                    //alert("黑子胜！");
-                    layer.msg('黑棋胜!', {icon: 6,time:1000});
+                    alert("黑子胜！");
                     EventUtil.removeListener(chess, "click", setPiece);
                     EventUtil.removeListener(retract, "click", fnRetract);
                 } else if (win(i, j ,chessBoard) == 2) {
-                    //alert("白子胜！")
-                    layer.msg('白棋胜!', {icon: 6,time:1000});
+                    alert("白子胜！")
                     EventUtil.removeListener(chess, "click", setPiece);
                     EventUtil.removeListener(retract, "click", fnRetract);
                 }
