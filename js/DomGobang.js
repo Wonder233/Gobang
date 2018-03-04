@@ -17,6 +17,7 @@ function DomGobang() {
             chessBoard[i][j] = 0;
         }
     }
+
     var table = null;//棋盘
     var divctx = null;//棋子
     initBoard(gridSize);
@@ -76,111 +77,6 @@ function DomGobang() {
         //console.log("left：",x * 30 - 15," top：",y * 30 - 15);
         divctx.appendChild(img);
     }
-    // 判断输赢
-    function win(x, y) {
-        //判定横向五个相连
-        function rowWin(x, y) {
-            var count = 1;
-            for (var i = x + 1; i < 15; i++) {// 向右查找
-                if (chessBoard[x][y] == chessBoard[i][y]) {
-                    count++;
-                } else {
-                    break;
-                }
-            }
-            for (var i = x - 1; i >= 0; i--) {// 向左查找
-                if (chessBoard[x][y] == chessBoard[i][y]) {
-                    count++;
-                } else {
-                    break;
-                }
-            }
-
-            if (count >= 5) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        //判定竖向五个相连
-        function columnWin(x, y) {
-            var count = 1;
-            for (var i = y + 1; i < 15; i++) {
-                if (chessBoard[x][y] == chessBoard[x][i]) { //向下查找
-                    count++;
-                } else {
-                    break;
-                }
-            }
-            for (var i = y - 1; i >= 0; i--) {// 向上查找
-                if (chessBoard[x][y] == chessBoard[x][i]) {
-                    count++;
-                } else {
-                    break;
-                }
-            }
-
-            if (count >= 5) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        //判定斜向右下五个相连
-        function rightDownWin(x, y) {
-            var count = 1;
-            for (var i = x + 1, j = y + 1; i < 15 && j < 15; i++, j++) {// 向右下查找
-                if (chessBoard[x][y] == chessBoard[i][j]) {
-                    count++;
-                } else {
-                    break;
-                }
-            }
-            for (var i = x - 1, j = y - 1; i >= 0 && j >= 0; i--, j--) {// 向左上查找
-                if (chessBoard[x][y] == chessBoard[i][j]) {
-                    count++;
-                } else {
-                    break;
-                }
-            }
-            if (count >= 5) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        //判定斜向左下五个相连
-        function leftDownWin(x, y) {
-            var count = 1;
-            for (var i = x - 1, j = y + 1; i >= 0 && j < 15; i--, j++) {// 向右查找
-                if (chessBoard[x][y] == chessBoard[i][j]) {
-                    count++;
-                } else {
-                    break;
-                }
-            }
-            for (var i = x + 1, j = y - 1; i < 15 && j >= 0; i++, j--) {// 向左查找
-                if (chessBoard[x][y] == chessBoard[i][j]) {
-                    count++;
-                } else {
-                    break;
-                }
-            }
-            if (count >= 5) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        if (rowWin(x, y) || columnWin(x, y) || rightDownWin(x, y) || leftDownWin(x, y)) {
-            return chessBoard[x][y];
-        }
-        return 0;
-    }
     /**
      * 下棋 handler
      * @param e
@@ -198,15 +94,17 @@ function DomGobang() {
             chessBoard[i][j] = flag;
             historyPiece.push({x: i, y: j});
 
-            //setTimeout(function () {
-                if (win(i, j) === 1) {
+            setTimeout(function () {
+                if (win(i, j ,chessBoard) === 1) {
                     EventUtil.removeListener(divctx, "click", setPiece);
+                    EventUtil.removeListener(retract, "click", fnRetract);
                     alert("黑子胜！");
-                } else if (win(i, j) == 2) {
+                } else if (win(i, j ,chessBoard) == 2) {
                     EventUtil.removeListener(divctx, "click", setPiece);
+                    EventUtil.removeListener(retract, "click", fnRetract);
                     alert("白子胜！")
                 }
-            //}, 0);
+            }, 0);
 
             if (flag === 1) {
                 flag = 2;

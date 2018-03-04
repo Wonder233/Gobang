@@ -64,11 +64,117 @@ var EventUtil = {
 }
 
 function canvasSupport() {
-    try{
+    try {
         document.createElement('canvas').getContext("2d");
         return true;
-    }catch(err){
+    } catch (err) {
         return false;
     }
+}
+
+// 判断输赢函数
+function win(x, y, chessBoard) {
+    //判定横向五个相连
+    function rowWin(x, y) {
+        var count = 1;
+        for (var i = x + 1; i < 15; i++) {// 向右查找
+            if (chessBoard[x][y] == chessBoard[i][y]) {
+                count++;
+            } else {
+                break;
+            }
+        }
+        for (var i = x - 1; i >= 0; i--) {// 向左查找
+            if (chessBoard[x][y] == chessBoard[i][y]) {
+                count++;
+            } else {
+                break;
+            }
+        }
+
+        if (count >= 5) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    //判定竖向五个相连
+    function columnWin(x, y) {
+        var count = 1;
+        for (var i = y + 1; i < 15; i++) {
+            if (chessBoard[x][y] == chessBoard[x][i]) { //向下查找
+                count++;
+            } else {
+                break;
+            }
+        }
+        for (var i = y - 1; i >= 0; i--) {// 向上查找
+            if (chessBoard[x][y] == chessBoard[x][i]) {
+                count++;
+            } else {
+                break;
+            }
+        }
+
+        if (count >= 5) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    //判定斜向右下五个相连
+    function rightDownWin(x, y) {
+        var count = 1;
+        for (var i = x + 1, j = y + 1; i < 15 && j < 15; i++, j++) {// 向右下查找
+            if (chessBoard[x][y] == chessBoard[i][j]) {
+                count++;
+            } else {
+                break;
+            }
+        }
+        for (var i = x - 1, j = y - 1; i >= 0 && j >= 0; i--, j--) {// 向左上查找
+            if (chessBoard[x][y] == chessBoard[i][j]) {
+                count++;
+            } else {
+                break;
+            }
+        }
+        if (count >= 5) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    //判定斜向左下五个相连
+    function leftDownWin(x, y) {
+        var count = 1;
+        for (var i = x - 1, j = y + 1; i >= 0 && j < 15; i--, j++) {// 向右查找
+            if (chessBoard[x][y] == chessBoard[i][j]) {
+                count++;
+            } else {
+                break;
+            }
+        }
+        for (var i = x + 1, j = y - 1; i < 15 && j >= 0; i++, j--) {// 向左查找
+            if (chessBoard[x][y] == chessBoard[i][j]) {
+                count++;
+            } else {
+                break;
+            }
+        }
+        if (count >= 5) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    if (rowWin(x, y) || columnWin(x, y) || rightDownWin(x, y) || leftDownWin(x, y)) {
+        return chessBoard[x][y];
+    }
+    return 0;
 }
 
