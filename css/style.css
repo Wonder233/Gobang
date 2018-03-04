@@ -1,0 +1,54 @@
+.content {
+    width: 800px;
+    height: 550px;
+    margin: 50px auto;
+    background: url(../images/bg.png) 0 0 no-repeat;
+    background-size: 100% 100%;
+}
+#chessBox {
+    float: left;
+    position: relative;
+    width: 570px;
+    height: 550px;
+}
+.Tools {
+    float: right;
+    width: 26%;
+}
+#restart{
+    cursor: pointer;
+    margin-top: 180px;
+}
+#retract{
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+canvas {
+    position: absolute;
+    margin: 40px 50px;
+    border-radius: 2%;
+    border: #985e0c 10px solid;
+}
+canvas#board{
+    background: #f5e6bd;
+}
+
+table{
+    position: absolute;
+    border-color: #985e0c;
+    margin: 25px 50px;
+}
+tbody{
+    background: #f5e6bd;
+}
+td{
+    padding: 0;
+}
+div#divctx{
+    position: absolute;
+    width: 450px;
+    height: 450px;
+    margin: 25px 50px;
+    border: 10px solid #985e0c;
+}
