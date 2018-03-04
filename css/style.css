@@ -24,6 +24,11 @@
     margin-top: 20px;
 }
 
+.about{
+    color: #773709;
+    margin: 20px 10px;
+}
+
 canvas {
     position: absolute;
     margin: 40px 50px;
