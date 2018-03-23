@@ -3,32 +3,46 @@
  * @type {{addListener: Function, removeListener: Function, getEvent: Function, getTarget: Function, stopPropagation: Function, preventDefault: Function}}
  */
 var EventUtil = {
-    addListener: function (target, type, handler) {
+    addListener: function (target, type, handler, scope) {
+        function fn(event) {
+            var evt = event ? event : window.event;
+            evt.target = event.target || event.srcElement;
+            return handler.apply(scope || this, arguments);
+        }
+
+        target.eventHash = target.eventHash || {};
+        (target.eventHash [type] = target.eventHash [type] || []).push({
+            "name": type,
+            "handler": handler,
+            "fn": fn,
+            "scope": scope
+        });
         if (target.addEventListener) {
-            console.log("addEventListener");
-            target.addEventListener(type, handler);
+            target.addEventListener(type, fn, false);
         } else if (target.attachEvent) {
-            console.log("attachEvent");
-            //target.detachEvent("on" + type, handler);
-            target.attachEvent("on" + type, function () {
-                handler.call(target);
-            });
+            target.attachEvent("on" + type, fn);
         } else {
-            target["on" + type] = handler;
+            target["on" + type] = fn;
         }
     },
-    removeListener: function (target, type, handler) {
-        if (target.removeEventListener) {
-            console.log("removeListener");
-            target.removeEventListener(type, handler);
-        } else if (target.detachEvent) {
-            console.log("detachEvent");
-            target.detachEvent("on" + type, function () {
-                handler.call(target);
-            });
-            //target.detachEvent("on" + type, handler);
-        } else {
-            target["on" + type] = null;
+    removeListener: function (target, type, handler, scope) {
+        target.eventHash = target.eventHash || {};
+        var evtList = target.eventHash [type] || [], len = evtList.length;
+        if (len > 0) {
+            for (; len--; ) {
+                var curEvttarget = evtList[len];
+                if (curEvttarget.name == type && curEvttarget.handler === handler && curEvttarget.scope === scope) {
+                    if (target.removeEventListener) {
+                        target.removeEventListener(type, curEvttarget.fn, false);
+                    } else if (target.detachEvent) {
+                        target.detachEvent("on" + type, curEvttarget.fn);
+                    } else {
+                        target["on" + type] = null;
+                    }
+                    evtList.splice(len, 1);
+                    break;
+                }
+            }
         }
     },
     getEvent: function (e) {      //获取事件对象
@@ -63,6 +77,30 @@ var EventUtil = {
     }
 }
 
+function addHandler(obj, type, handler, scope) {
+    function fn(event) {
+        var evt = event ? event : window.event;
+        evt.target = event.target || event.srcElement;
+        return handler.apply(scope || this, arguments);
+    }
+
+    //为需要注册事件处理程序的对象定义一个保存事件的hash对象，并把事件处理程序和作用域保存在该事件类型的队列里面
+    obj.eventHash = obj.eventHash || {}; 
+    (obj.eventHash [type] = obj.eventHash [type] || []).push({
+        "name": type,
+        "handler": handler,
+        "fn": fn,
+        "scope": scope
+    });
+    if (obj.addEventListener) {
+        obj.addEventListener(type, fn, false);
+    } else if (obj.attachEvent) {
+        obj.attachEvent("on" + type, fn);
+    } else {
+        obj["on" + type] = fn;
+    }
+}
+
 function canvasSupport() {
     try {
         document.createElement('canvas').getContext("2d");
@@ -72,8 +110,15 @@ function canvasSupport() {
     }
 }
 
+// 继承原型
+function inheritPrototype(subType,superType){
+    var prototype = Object(superType.prototype);  //创建对象
+    prototype.constructor = subType;              //增强对象
+    subType.prototype = prototype;                //指定对象
+}
+
 // 判断输赢函数
-function win(x, y, chessBoard) {
+/*function win(x, y, chessBoard) {
     //判定横向五个相连
     function rowWin(x, y) {
         var count = 1;
@@ -176,5 +221,5 @@ function win(x, y, chessBoard) {
         return chessBoard[x][y];
     }
     return 0;
-}
+}*/
 
