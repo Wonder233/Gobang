@@ -110,7 +110,7 @@ DomGobang.prototype.fnRestart = function () {
     this.flag = 1;
     this.chess.innerHTML = "";
     EventUtil.addListener(this.chess, "click", this.setPiece,this);
-
+    EventUtil.addListener(this.retract, "click", this.fnRetract , this);
 };
 /**
  * 悔棋 handler

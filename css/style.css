@@ -3,14 +3,7 @@
     height: 550px;
     margin: 50px auto;
     background-image:url(../images/bg.png);
-    -moz-background-size: 100% 100%;
-    -o-background-size: 100% 100%;
-    -webkit-background-size: 100% 100%;
     background-size: 100% 100%;
-    -moz-border-image: url(../images/bg.png) 0;
-    background-repeat:no-repeat\9;
-    background-image:none\9;
-    filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/bg.png', sizingMethod='scale')\9;
 }
 #chessBox {
     float: left;
@@ -21,14 +14,24 @@
 .Tools {
     float: right;
     width: 26%;
+    padding-top: 150px;
+}
+.btn{
+    cursor: pointer;
+    margin-top: 30px;
+    z-index: 100;
+    height: 35px;
+    width: 135px;
+    border-style: none;
+    cursor: pointer;
 }
 #restart{
-    cursor: pointer;
-    margin-top: 180px;
+    background-image: url(../images/restart.png);
+    background-color: Transparent;
 }
 #retract{
-    cursor: pointer;
-    margin-top: 20px;
+    background-image: url(../images/retract.png);
+    background-color: Transparent;
 }
 
 .about{
