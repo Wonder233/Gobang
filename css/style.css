@@ -2,8 +2,15 @@
     width: 800px;
     height: 550px;
     margin: 50px auto;
-    background: url(../images/bg.png) 0 0 no-repeat;
+    background-image:url(../images/bg.png);
+    -moz-background-size: 100% 100%;
+    -o-background-size: 100% 100%;
+    -webkit-background-size: 100% 100%;
     background-size: 100% 100%;
+    -moz-border-image: url(../images/bg.png) 0;
+    background-repeat:no-repeat\9;
+    background-image:none\9;
+    filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/bg.png', sizingMethod='scale')\9;
 }
 #chessBox {
     float: left;
