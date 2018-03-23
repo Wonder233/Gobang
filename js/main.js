@@ -1,6 +1,4 @@
 (function () {
-
-    console.log(canvasSupport())
     if(canvasSupport()){
         console.log("支持canvas");
         var h5gobang = new H5Gobang();

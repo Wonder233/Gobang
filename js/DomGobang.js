@@ -1,12 +1,10 @@
 function DomGobang() {
     BaseGobang.call(this);
-    console.log(this)
 }
 
 DomGobang.prototype = new BaseGobang();
 DomGobang.prototype.constructor = DomGobang;
 
-//inheritPrototype(DomGobang,BaseGobang);
 DomGobang.prototype.initBoard = function () { //初始化棋盘
     this.board = document.createElement("table");
     /* reason：IE盒子模式 */
@@ -37,7 +35,6 @@ DomGobang.prototype.initBoard = function () { //初始化棋盘
     this.chess.style.height = this.boxHeight;
     this.chessBox.appendChild(this.chess);
 
-    console.log(this);
     console.log("棋盘初始化结束...");
 
     EventUtil.addListener(this.chess, "click", this.setPiece , this);
@@ -52,17 +49,15 @@ DomGobang.prototype.initBoard = function () { //初始化棋盘
  */
 DomGobang.prototype.drawPiece = function (x, y, flag ,context ,id) {
     var img = new Image();
-    console.log("drawPiece flag ",flag);
     if (flag === 1) {
         img.src = "./images/black.png";
     } else {
         img.src = "./images/white.png";
     }
-    img.id = id;//this.historyPiece.length;
+    img.id = id;
     img.style.position = "absolute";
-    img.style.left = x * 30 - 15;
-    img.style.top = y * 30 - 15;
-    //console.log("left：",x * 30 - 15," top：",y * 30 - 15);
+    img.style.left = x * this.gridSize - this.radius;
+    img.style.top = y * this.gridSize - this.radius;
     context.appendChild(img);
 }
 
@@ -74,9 +69,8 @@ DomGobang.prototype.setPiece = function (e) {
     var e = EventUtil.getEvent(e);
     var x = e.offsetX;
     var y = e.offsetY;
-    console.log("落子像素点(%d,%d)", x, y);
-    var i = Math.ceil((x -15) / 30);
-    var j = Math.ceil((y -15) / 30);
+    var i = Math.ceil((x -this.radius) / this.gridSize);
+    var j = Math.ceil((y -this.radius) / this.gridSize);
     console.log("落子点：(" + i + "," + j + ")");
     if (this.chessBoard[i][j] == 0) {
         this.drawPiece(i, j, this.flag ,this.chess,this.historyPiece.length);
@@ -112,7 +106,8 @@ DomGobang.prototype.setPiece = function (e) {
  * @param e
  */
 DomGobang.prototype.fnRestart = function () {
-    this.restartInit(this.chessBoard,this.historyPiece,this.flag);
+    this.restartInit(this.chessBoard,this.historyPiece);
+    this.flag = 1;
     this.chess.innerHTML = "";
     EventUtil.addListener(this.chess, "click", this.setPiece,this);
 

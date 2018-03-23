@@ -7,15 +7,17 @@ function BaseGobang() {
     this.boxHeight = 450;
     this.boxWidth = 450;
     this.gridSize = 30; //棋格尺寸
+    this.radius = this.gridSize/2; //棋半径
     this.row = (this.boxWidth - this.gridSize) / this.gridSize; //行
     this.col = (this.boxHeight - this.gridSize) / this.gridSize; //列
+    console.log(this.row)
 
     this.historyPiece = []; //保存历史下棋位置记录
     this.flag = 1; //标识：棋子颜色，1：黑棋，2：白棋
     this.chessBoard = [];//棋盘数组
-    for (var i = 0; i < 15; i++) {
+    for (var i = 0; i <= this.row; i++) {
         this.chessBoard[i] = [];
-        for (var j = 0; j < 15; j++) {
+        for (var j = 0; j <= this.row; j++) {
             this.chessBoard[i][j] = 0;
         }
     }
@@ -146,9 +148,6 @@ BaseGobang.prototype = {
                 chessBoard[i][j] = 0;
             }
         }
-
         historyPiece = []; //保存历史下棋位置记录
-        flag = 1;
-        console.log("flag",flag);
     }
 };

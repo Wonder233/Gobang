@@ -1,9 +1,7 @@
 function H5Gobang() {
     BaseGobang.call(this);
-    console.log(this)
 }
 
-//inheritPrototype(H5Gobang,BaseGobang);
 H5Gobang.prototype = new BaseGobang();
 H5Gobang.prototype.constructor = H5Gobang;
 
@@ -16,12 +14,12 @@ H5Gobang.prototype.initBoard = function () { //初始化棋盘
 
     this.boardCtx = this.board.getContext("2d");
     this.boardCtx.strokeStyle = "#000"; //棋盘线颜色
-    for (var i = 0; i < 15; i++) {  //通过循环画网格
-        this.boardCtx.moveTo(15, 15 + i * this.gridSize);
-        this.boardCtx.lineTo(this.board.width - 15, 15 + i * this.gridSize);
+    for (var i = 0; i <= this.row; i++) {  //通过循环画网格
+        this.boardCtx.moveTo(this.radius, this.radius + i * this.gridSize);
+        this.boardCtx.lineTo(this.board.width - this.radius, this.radius + i * this.gridSize);
         this.boardCtx.stroke();
-        this.boardCtx.moveTo(15 + i * this.gridSize, 15);
-        this.boardCtx.lineTo(15 + i * this.gridSize, this.board.height - 15);
+        this.boardCtx.moveTo(this.radius + i * this.gridSize, this.radius);
+        this.boardCtx.lineTo(this.radius + i * this.gridSize, this.board.height - this.radius);
         this.boardCtx.stroke();
     }
 
@@ -33,7 +31,6 @@ H5Gobang.prototype.initBoard = function () { //初始化棋盘
     this.chessBox.appendChild(this.chess);
 
     this.chessCtx = this.chess.getContext("2d");
-    console.log(this);
     console.log("棋盘初始化结束...");
 
     EventUtil.addListener(this.chess, "click", this.setPiece , this);
@@ -48,9 +45,10 @@ H5Gobang.prototype.initBoard = function () { //初始化棋盘
  */
 H5Gobang.prototype.drawPiece = function (x, y, flag, context) {
     context.beginPath();
-    context.arc(15 + x * 30, 15 + y * 30, 13, 0, 2 * Math.PI); //画圆
+    context.arc(this.gridSize/2 + x * this.gridSize, this.gridSize/2 + y * this.gridSize, this.gridSize/2 - 1, 0, 2 * Math.PI); //画圆
     context.closePath();
-    var gradient = context.createRadialGradient(15 + x * 30 + 2, 15 + y * 30 - 2, 15, 15 + x * 30, 15 + y * 30, 0);
+    var gradient = context.createRadialGradient(this.radius + x * this.gridSize + 2,this.radius + y * this.gridSize - 2, this.radius,
+        this.radius + x * this.gridSize, this.radius + y * this.gridSize, 0);
     if (flag === 1) {
         gradient.addColorStop(0, "#0a0a0a");
         gradient.addColorStop(1, "#636766");
@@ -69,8 +67,8 @@ H5Gobang.prototype.drawPiece = function (x, y, flag, context) {
 H5Gobang.prototype.setPiece = function (e) {
     var x = e.offsetX;
     var y = e.offsetY;
-    var i = Math.floor(x / 30);
-    var j = Math.floor(y / 30);
+    var i = Math.floor(x / this.gridSize);
+    var j = Math.floor(y / this.gridSize);
     //console.log("落子点：(" + i + "," + j + ")");
     if (this.chessBoard[i][j] == 0) {
         this.drawPiece(i, j, this.flag, this.chessCtx);
@@ -79,16 +77,15 @@ H5Gobang.prototype.setPiece = function (e) {
 
         var _this = this;
         setTimeout(function () {
-            //console.log(_this);
             if (_this.win(i, j, _this.chessBoard) === 1) {
                 alert("黑子胜！");
                 EventUtil.removeListener(_this.chess, "click", _this.setPiece,_this);
-                EventUtil.removeListener(_this.retract, "click", _this.fnRetract);
+                EventUtil.removeListener(_this.retract, "click", _this.fnRetract,_this);
                 _this.flag = 1;
             } else if (_this.win(i, j, _this.chessBoard) == 2) {
                 alert("白子胜！")
                 EventUtil.removeListener(_this.chess, "click", _this.setPiece,_this);
-                EventUtil.removeListener(_this.retract, "click", _this.fnRetract);
+                EventUtil.removeListener(_this.retract, "click", _this.fnRetract,_this);
                 _this.flag = 1;
             }
         }, 0)
@@ -105,9 +102,9 @@ H5Gobang.prototype.setPiece = function (e) {
  * 重新开始 handler
  */
 H5Gobang.prototype.fnRestart = function () {
-    this.restartInit(this.chessBoard,this.historyPiece,this.flag);
+    this.restartInit(this.chessBoard,this.historyPiece);
+    this.flag = 1;
     this.chessCtx.clearRect(0, 0, this.chessBox.clientHeight, this.chessBox.clientWidth);
-    console.log(this);
     EventUtil.addListener(this.chess, "click", this.setPiece , this);
     EventUtil.addListener(this.retract, "click", this.fnRetract , this);
 }
