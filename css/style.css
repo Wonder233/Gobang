@@ -2,7 +2,7 @@
     width: 800px;
     height: 550px;
     margin: 50px auto;
-    background-image:url(../images/bg.png);
+    background: url(../images/bg.png) 0 0 no-repeat;
     background-size: 100% 100%;
 }
 #chessBox {
@@ -14,24 +14,14 @@
 .Tools {
     float: right;
     width: 26%;
-    padding-top: 150px;
-}
-.btn{
-    cursor: pointer;
-    margin-top: 30px;
-    z-index: 100;
-    height: 35px;
-    width: 135px;
-    border-style: none;
-    cursor: pointer;
 }
 #restart{
-    background-image: url(../images/restart.png);
-    background-color: Transparent;
+    cursor: pointer;
+    margin-top: 180px;
 }
 #retract{
-    background-image: url(../images/retract.png);
-    background-color: Transparent;
+    cursor: pointer;
+    margin-top: 20px;
 }
 
 .about{

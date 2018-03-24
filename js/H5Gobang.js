@@ -102,11 +102,8 @@ H5Gobang.prototype.setPiece = function (e) {
  * 重新开始 handler
  */
 H5Gobang.prototype.fnRestart = function () {
-    this.restartInit(this.chessBoard,this.historyPiece);
-    this.flag = 1;
+    this.restartInit.call(this);
     this.chessCtx.clearRect(0, 0, this.chessBox.clientHeight, this.chessBox.clientWidth);
-    EventUtil.addListener(this.chess, "click", this.setPiece , this);
-    EventUtil.addListener(this.retract, "click", this.fnRetract , this);
 }
 
 /**
@@ -114,16 +111,9 @@ H5Gobang.prototype.fnRestart = function () {
  * @param e
  */
 H5Gobang.prototype.fnRetract = function () {
-    if (this.historyPiece.length) {
-        var point = this.historyPiece.pop();
-        this.chessBoard[point.x][point.y] = 0;
-        console.log("悔棋坐标：", point);
+    var point = this.retractInit.call(this);
+    if(point) {
         this.chessCtx.clearRect(point.x * this.gridSize, point.y * this.gridSize, this.gridSize, this.gridSize);
-        if (this.flag === 1) {
-            this.flag = 2;
-        } else {
-            this.flag = 1;
-        }
     }
 }
 

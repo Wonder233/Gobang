@@ -106,26 +106,16 @@ DomGobang.prototype.setPiece = function (e) {
  * @param e
  */
 DomGobang.prototype.fnRestart = function () {
-    this.restartInit(this.chessBoard,this.historyPiece);
-    this.flag = 1;
+    this.restartInit.call(this);
     this.chess.innerHTML = "";
-    EventUtil.addListener(this.chess, "click", this.setPiece,this);
-    EventUtil.addListener(this.retract, "click", this.fnRetract , this);
 };
 /**
  * 悔棋 handler
  * @param e
  */
 DomGobang.prototype.fnRetract = function () {
-    if (this.historyPiece.length) {
-        var point = this.historyPiece.pop();
-        this.chessBoard[point.x][point.y] = 0;
-        console.log("悔棋坐标：", point.x,point.y);
+    var point = this.retractInit.call(this);
+    if(point){
         this.chess.removeChild(this.chess.childNodes[this.historyPiece.length]);
-        if (this.flag === 1) {
-            this.flag = 2;
-        } else {
-            this.flag = 1;
-        }
     }
 };

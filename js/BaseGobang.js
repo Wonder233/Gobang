@@ -141,13 +141,34 @@ BaseGobang.prototype = {
      * 重新开始 handler
      * @param e
      */
-    restartInit: function (chessBoard,historyPiece,flag) {
+    restartInit: function () {
         for (var i = 0; i < 15; i++) {
-            chessBoard[i] = [];
+            this.chessBoard[i] = [];
             for (var j = 0; j < 15; j++) {
-                chessBoard[i][j] = 0;
+                this.chessBoard[i][j] = 0;
             }
         }
-        historyPiece = []; //保存历史下棋位置记录
+        this.historyPiece = []; //保存历史下棋位置记录
+        this.flag = 1;
+        EventUtil.addListener(this.chess, "click", this.setPiece,this);
+    },
+    /**
+     * 悔棋 handler
+     * @param e
+     */
+    retractInit: function () {
+        if (this.historyPiece.length) {
+            var point = this.historyPiece.pop();
+            this.chessBoard[point.x][point.y] = 0;
+            console.log("悔棋坐标：", point.x,point.y);
+            if (this.flag === 1) {
+                this.flag = 2;
+            } else {
+                this.flag = 1;
+            }
+            return point;
+        }
+        return null;
     }
+
 };
